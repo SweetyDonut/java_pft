@@ -1,7 +1,6 @@
 package ru.stqa.pft.addressbook.appmanager;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import ru.stqa.pft.addressbook.model.ContactData;
 
@@ -17,20 +16,12 @@ public class ApplicationManager {
   private GroupHelper groupHelper;
   private SessionHelper sessionHelper;
 
-  public static boolean isAlertPresent(FirefoxDriver wd) {
-    try {
-      wd.switchTo().alert();
-      return true;
-    } catch (NoAlertPresentException e) {
-      return false;
-    }
-  }
 
   public void init() {
     wd = new FirefoxDriver();
     wd.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
     wd.get("http://localhost/addressbook/");
-    groupHelper=new GroupHelper(wd);
+    groupHelper = new GroupHelper(wd);
     navigationHelper = new NavigationHelper(wd);
     sessionHelper = new SessionHelper(wd);
     sessionHelper.login("admin", "secret");
@@ -71,14 +62,13 @@ public class ApplicationManager {
     wd.findElement(By.name("work")).sendKeys(contactData.getWork());
     wd.findElement(By.name("email")).click();
     wd.findElement(By.name("email")).clear();
-    
-	wd.findElement(By.name("email")).sendKeys(contactData.getMail());
+
+    wd.findElement(By.name("email")).sendKeys(contactData.getMail());
   }
 
   public void initContactCreation() {
     wd.findElement(By.linkText("add new")).click();
   }
-
 
 
   public void stop() {
