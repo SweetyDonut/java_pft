@@ -51,7 +51,7 @@ public class ContactData {
     return homephone;
   }
 
-  public String getWork() {
+  public String getWorkPhone() {
     return work;
   }
 
