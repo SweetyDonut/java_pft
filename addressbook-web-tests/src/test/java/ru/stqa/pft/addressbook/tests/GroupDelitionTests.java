@@ -12,7 +12,7 @@ public class GroupDelitionTests extends TestBase {
 
         int before = app.getGroupHelper().getGroupCount();
 
-        if (!app.getGroupHelper().isThereAGroup()){
+          if (!app.getGroupHelper().isThereAGroup()){
             app.getGroupHelper().createGroup(new GroupData("test1","test1","test1"));
         }
 
