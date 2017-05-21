@@ -9,13 +9,15 @@ import ru.stqa.pft.addressbook.model.ContactData;
 public class ContactDelitionTests extends TestBase {
 
   @Test
-  public void testContactDelition(){
-      app.getNavigationHelper().goToHomePage();
-
-      app.getContactHelper().selectContact();
-      app.getContactHelper().initContactDelition();
-      app.getContactHelper().submitContactDelition();
-      app.getNavigationHelper().goToHomePage();
+  public void testContactDelition() {
+    app.getNavigationHelper().goToHomePage();
+    if (!app.getContactHelper().isThereAContact()) {
+      app.getContactHelper().createContact(new ContactData("dfgbh", "fghdfh", "fghfghfgh", "fhfghfgh", "fghfghfgh", "yyyyyyyyy", "xxxxxxxx", "raif", "db@mail.ru", null));
     }
+    app.getContactHelper().selectContact();
+    app.getContactHelper().initContactDelition();
+    app.getContactHelper().submitContactDelition();
+    app.getNavigationHelper().goToHomePage();
+  }
 
 }
