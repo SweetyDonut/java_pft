@@ -3,9 +3,12 @@ package ru.stqa.pft.addressbook.appmanager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import ru.stqa.pft.addressbook.model.ContactData;
+
+import java.util.List;
 
 /**
  * Created by Даниил on 21.05.2017.
@@ -52,8 +55,9 @@ public class ContactHelper extends HelperBase{
 
   }
 
-  public void selectContact() {
-    click(By.name("selected[]"));
+  public void selectContact(int index) {
+    wd.findElements(By.name("selected[]")).get(index).click();
+
   }
 
   public void initContactDelition() {
@@ -64,8 +68,10 @@ public class ContactHelper extends HelperBase{
     wd.switchTo().alert().accept();
   }
 
-  public void initContactModification() {
-    click(By.xpath("//table[@id='maintable']/tbody/tr[2]/td[8]/a/img"));
+  public void initContactModification(int index) {
+    wd.findElements(By.cssSelector("a[href*=\"edit.php?\"]")).get(index).click();
+    //String selector = "//table[@id='maintable']/tbody/tr["+index+" ]/td[8]/a/img";
+
   }
 
   public void submitContactModification() {

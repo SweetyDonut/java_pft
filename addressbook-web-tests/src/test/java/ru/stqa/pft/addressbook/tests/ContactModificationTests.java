@@ -19,7 +19,7 @@ public class ContactModificationTests extends TestBase{
       app.getContactHelper().createContact(new ContactData("dfgbh", "fghdfh", "fghfghfgh", "fhfghfgh", "fghfghfgh", "yyyyyyyyy", "xxxxxxxx", "raif", "db@mail.ru", null));
     }
 
-    app.getContactHelper().initContactModification();
+    app.getContactHelper().initContactModification(0);
     app.getContactHelper().fillContactForm(new ContactData("dfgbh", "fghdfh", "fghfghfgh", "fhfghfgh", "fghfghfgh", "yyyyyyyyy", "xxxxxxxx", "raif", "db@mail.ru",null),false);
     app.getContactHelper().submitContactModification();
     app.getContactHelper().returnToHomePage();
