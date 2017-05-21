@@ -11,6 +11,7 @@ public class ContactDelitionTests extends TestBase {
   @Test
   public void testContactDelition(){
       app.getNavigationHelper().goToHomePage();
+
       app.getContactHelper().selectContact();
       app.getContactHelper().initContactDelition();
       app.getContactHelper().submitContactDelition();
