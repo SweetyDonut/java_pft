@@ -22,10 +22,7 @@ public class ContactDelitionTests extends TestBase {
     app.getContactHelper().submitContactDelition();
     app.getNavigationHelper().goToHomePage();
     int after = app.getContactHelper().getGontactCount();
-    if (before!=0){
-      Assert.assertEquals(after,before-1);
-    }
-    else Assert.assertEquals(after, before);
+    Assert.assertEquals(after, before-1);
   }
 
 }
