@@ -15,23 +15,24 @@ public class ContactDelitionTests extends TestBase {
   public void testContactDelition() {
 
     app.getNavigationHelper().goToHomePage();
-    List<ContactData> before =  app.getContactHelper().getGontactList();
+
     if (!app.getContactHelper().isThereAContact()) {
       app.getContactHelper().createContact(new ContactData("dfgbh", "fghdfh", "fghfghfgh", "fhfghfgh", "fghfghfgh", "yyyyyyyyy", "xxxxxxxx", "raif", "db@mail.ru", null));
     }
+    List<ContactData> before =  app.getContactHelper().getGontactList();
+
     app.getContactHelper().selectContact(before.size()-1);
     app.getContactHelper().initContactDelition();
     app.getContactHelper().submitContactDelition();
     app.getNavigationHelper().goToHomePage();
+
     List<ContactData> after = app.getContactHelper().getGontactList();
     Assert.assertEquals(after.size(), before.size()-1);
+
     before.remove(before.size()-1);
-    
-    for (int i = 0; i < after.size(); i++) {
+    Assert.assertEquals(before,after);
 
-      Assert.assertEquals(before.get(i),after.get(i));
 
-    }
   }
 
 }
