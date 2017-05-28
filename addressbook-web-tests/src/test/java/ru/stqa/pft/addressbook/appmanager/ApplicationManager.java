@@ -6,8 +6,6 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.remote.BrowserType;
 
-import java.util.concurrent.TimeUnit;
-
 /**
  * Created by Даниил on 21.05.2017.
  */
@@ -25,14 +23,13 @@ public class ApplicationManager {
 
   }
 
-
   public void init() {
-    if (browser.equals(BrowserType.FIREFOX)){
+    if (browser.equals(BrowserType.FIREFOX)) {
       wd = new FirefoxDriver();
-    }else if(browser.equals(BrowserType.CHROME)){
+    } else if (browser.equals(BrowserType.CHROME)) {
       wd = new ChromeDriver();
-    }else if(browser.equals(BrowserType.IE)){
-      wd=new InternetExplorerDriver();
+    } else if (browser.equals(BrowserType.IE)) {
+      wd = new InternetExplorerDriver();
     }
 
     //wd.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
@@ -43,9 +40,6 @@ public class ApplicationManager {
     contactHelper = new ContactHelper(wd);
     sessionHelper.login("admin", "secret");
   }
-
-
-
 
   public void stop() {
     wd.quit();
@@ -58,10 +52,12 @@ public class ApplicationManager {
   public NavigationHelper getNavigationHelper() {
     return navigationHelper;
   }
+
   public ContactHelper getContactHelper() {
     return contactHelper;
   }
-  public  SessionHelper getSessionHelper() {
+
+  public SessionHelper getSessionHelper() {
     return sessionHelper;
   }
 }
