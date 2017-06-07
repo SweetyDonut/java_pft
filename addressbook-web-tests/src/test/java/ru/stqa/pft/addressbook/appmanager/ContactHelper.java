@@ -108,4 +108,17 @@ public class ContactHelper extends HelperBase {
     click(By.linkText("home page"));
 
   }
+
+  public void deliteContact(int index) {
+    selectContact(index);
+    initContactDelition();
+    submitContactDelition();
+  }
+
+  public void modifyContact(int index, ContactData contact) {
+    initContactModification(index);
+    fillContactForm(contact, false);
+    submitContactModification();
+    returnToHomePage();
+  }
 }
