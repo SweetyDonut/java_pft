@@ -18,7 +18,7 @@ public class ContactDelitionTests extends TestBase {
     app.goTo().HomePage();
 
     if (app.Contact().List().size()==0) {
-      app.Contact().create(new ContactData("dfgbh", "fghdfh", "fghfghfgh", "fhfghfgh", "fghfghfgh", "yyyyyyyyy", "xxxxxxxx", "raif", "db@mail.ru", null));
+      app.Contact().create(new ContactData().withFirstname("Danil").withLastname("Babin"));
     }
   }
   @Test

@@ -17,7 +17,7 @@ public class GroupModificationTests extends TestBase {
     app.goTo().GroupPage();
 
     if (app.Group().List().size()==0) {
-      app.Group().create(new GroupData("test1", "test1", "test1"));
+      app.Group().create(new GroupData().withName("test1"));
     }
   }
 
@@ -29,7 +29,7 @@ public class GroupModificationTests extends TestBase {
     List<GroupData> before = app.Group().List();
     int index = before.size() - 1;
 
-    GroupData group = new GroupData(before.get(index).getId(), "test1", "test2", "test3");
+    GroupData group = new GroupData().withName("test1").withId(before.get(index).getId());
 
     app.Group().modify(index, group);
 

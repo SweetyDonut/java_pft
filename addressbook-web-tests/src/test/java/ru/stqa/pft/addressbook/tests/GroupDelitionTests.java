@@ -14,7 +14,7 @@ public class GroupDelitionTests extends TestBase {
     app.goTo().GroupPage();
 
     if (app.Group().List().size()==0) {
-      app.Group().create(new GroupData("test1", "test1", "test1"));
+      app.Group().create(new GroupData().withName("test1"));
     }
   }
 
