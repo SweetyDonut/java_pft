@@ -27,7 +27,7 @@ public class ContactHelper extends HelperBase {
     return wd.findElements(By.name("selected[]")).size();
   }
 
-  public List<ContactData> getGontactList() {
+  public List<ContactData> List() {
     List<ContactData> contacts = new ArrayList<ContactData>();
     List<WebElement> elements = wd.findElements(By.name("entry"));
     for (WebElement element : elements) {
@@ -42,48 +42,48 @@ public class ContactHelper extends HelperBase {
     return contacts;
   }
 
-  public void createContact(ContactData contact) {
-    initContactCreation();
-    fillContactForm(contact, true);
-    submitContactCreation();
+  public void create(ContactData contact) {
+    initCreation();
+    fillForm(contact, true);
+    submitCreation();
     returnToHomePage();
   }
 
-  public void initContactCreation() {
+  public void initCreation() {
     click(By.linkText("add new"));
 
   }
 
-  public void initContactDelition() {
+  public void initDelition() {
     click(By.xpath("//div[@id='content']/form[2]/div[2]/input"));
   }
 
-  public void initContactModification(int index) {
+  public void initModification(int index) {
     wd.findElements(By.cssSelector("a[href*=\"edit.php?\"]")).get(index).click();
     //String selector = "//table[@id='maintable']/tbody/tr["+index+" ]/td[8]/a/img";
 
   }
 
-  public void selectContact(int index) {
+  public void select(int index) {
     wd.findElements(By.name("selected[]")).get(index).click();
 
   }
 
-  public void submitContactCreation() {
+  public void submitCreation() {
     click(By.xpath("//div[@id='content']/form/input[21]"));
 
 
   }
 
-  public void submitContactDelition() {
+  public void submitDelition() {
     wd.switchTo().alert().accept();
   }
 
-  public void submitContactModification() {
+  public void submitModification() {
     click(By.name("update"));
   }
 
-  public void fillContactForm(ContactData contactData, boolean creation) {
+  public void fillForm(ContactData contactData, boolean creation) {
     type(By.name("firstname"), contactData.getFirstname());
     type(By.name("middlename"), contactData.getMiddlename());
     type(By.name("lastname"), contactData.getLastname());
@@ -109,16 +109,16 @@ public class ContactHelper extends HelperBase {
 
   }
 
-  public void deliteContact(int index) {
-    selectContact(index);
-    initContactDelition();
-    submitContactDelition();
+  public void delite(int index) {
+    select(index);
+    initDelition();
+    submitDelition();
   }
 
-  public void modifyContact(int index, ContactData contact) {
-    initContactModification(index);
-    fillContactForm(contact, false);
-    submitContactModification();
+  public void modify(int index, ContactData contact) {
+    initModification(index);
+    fillForm(contact, false);
+    submitModification();
     returnToHomePage();
   }
 }

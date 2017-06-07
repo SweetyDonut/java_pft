@@ -11,10 +11,10 @@ public class GroupDelitionTests extends TestBase {
 
   @BeforeMethod
   public void ensurePreconditions(){
-    app.getNavigationHelper().goToGroupPage();
+    app.goTo().GroupPage();
 
-    if (!app.getGroupHelper().isThereAGroup()) {
-      app.getGroupHelper().createGroup(new GroupData("test1", "test1", "test1"));
+    if (app.Group().List().size()==0) {
+      app.Group().create(new GroupData("test1", "test1", "test1"));
     }
   }
 
@@ -22,13 +22,13 @@ public class GroupDelitionTests extends TestBase {
   public void testGroupDelition() {
 
 
-    List<GroupData> before = app.getGroupHelper().getGroupList();
+    List<GroupData> before = app.Group().List();
     int index = before.size() - 1;
 
-    app.getGroupHelper().deleteGroup(index);
-    app.getNavigationHelper().goToGroupPage();
+    app.Group().delete(index);
 
-    List<GroupData> after = app.getGroupHelper().getGroupList();
+
+    List<GroupData> after = app.Group().List();
     Assert.assertEquals(after.size(), index);
 
     before.remove(index);

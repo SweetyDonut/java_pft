@@ -21,11 +21,11 @@ public class GroupHelper extends HelperBase {
     return isElementPresent(By.name("selected[]"));
   }
 
-  public int getGroupCount() {
+  public int Count() {
     return wd.findElements(By.name("selected[]")).size();
   }
 
-  public List<GroupData> getGroupList() {
+  public List<GroupData> List() {
     List<GroupData> groups = new ArrayList<GroupData>();
     List<WebElement> elements = wd.findElements(By.cssSelector("span.group"));
     for (WebElement element : elements) {
@@ -37,49 +37,49 @@ public class GroupHelper extends HelperBase {
     return groups;
   }
 
-  public void createGroup(GroupData group) {
-    initGroupCreation();
-    fillGroupForm(group);
-    submitGroupCreation();
+  public void create(GroupData group) {
+    initCreation();
+    fillForm(group);
+    submitCreation();
     returnToGroupPage();
   }
 
-  public void modifyGroup(int index, GroupData group) {
-    selectGroup(index);
-    initGroupModification();
-    fillGroupForm(group);
-    submitGroupModification();
+  public void modify(int index, GroupData group) {
+    select(index);
+    initModification();
+    fillForm(group);
+    submitModification();
     returnToGroupPage();
   }
 
-  public void selectGroup(int index) {
+  public void select(int index) {
     wd.findElements(By.name("selected[]")).get(index).click();
   }
 
-  public void deleteSelectedGroup() {
+  public void deleteSelected() {
     click(By.name("delete"));
   }
 
-  public void initGroupCreation() {
+  public void initCreation() {
     click(By.name("new"));
   }
 
-  public void initGroupModification() {
+  public void initModification() {
     click(By.name("edit"));
   }
 
-  public void fillGroupForm(GroupData groupData) {
+  public void fillForm(GroupData groupData) {
 
     type(By.name("group_name"), groupData.getName());
     type(By.name("group_header"), groupData.getHeader());
     type(By.name("group_footer"), groupData.getFooter());
   }
 
-  public void submitGroupCreation() {
+  public void submitCreation() {
     click(By.name("submit"));
   }
 
-  public void submitGroupModification() {
+  public void submitModification() {
     click(By.name("update"));
   }
 
@@ -87,9 +87,10 @@ public class GroupHelper extends HelperBase {
     click(By.linkText("group page"));
   }
 
-  public void deleteGroup(int index) {
-    selectGroup(index);
-    deleteSelectedGroup();
+  public void delete(int index) {
+    select(index);
+    deleteSelected();
+    returnToGroupPage();
 
   }
 }

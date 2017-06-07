@@ -4,7 +4,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.ContactData;
 
-import java.util.HashSet;
+import java.util.Comparator;
 import java.util.List;
 
 public class ContactCreationTests extends TestBase {
@@ -12,20 +12,23 @@ public class ContactCreationTests extends TestBase {
   @Test
   public void testContactCreation() {
 
-    app.getNavigationHelper().goToHomePage();
+    app.goTo().HomePage();
 
-    List<ContactData> before = app.getContactHelper().getGontactList();
+    List<ContactData> before = app.Contact().List();
     ContactData contact = new ContactData("babin", "Vadimovich", "Daniil", "SweetyDonut", "SumProezd", "yyyyyyyyy", "xxxxxxxx", "raif", "db@mail.ru", null);
 
-    app.getContactHelper().createContact(contact);
+    app.Contact().create(contact);
 
-    List<ContactData> after = app.getContactHelper().getGontactList();
+    List<ContactData> after = app.Contact().List();
     Assert.assertEquals(after.size(), before.size() + 1);
 
-    int max1 = after.stream().max((o1, o2) -> Integer.compare(o1.getId(), o2.getId())).get().getId();
-    contact.setId(max1);
+
+    contact.setId(after.stream().max((o1, o2) -> Integer.compare(o1.getId(), o2.getId())).get().getId());
     before.add(contact);
-    Assert.assertEquals(new HashSet<Object>(before), new HashSet<Object>(after));
+    Comparator<? super ContactData> byId = (c1, c2) -> Integer.compare(c1.getId(),c2.getId());
+    before.sort(byId);
+    after.sort(byId);
+    Assert.assertEquals(before, after);
 
 
   }

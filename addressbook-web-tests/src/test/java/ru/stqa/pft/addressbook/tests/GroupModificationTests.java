@@ -5,8 +5,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.GroupData;
 
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Даниил on 21.05.2017.
@@ -15,10 +14,10 @@ public class GroupModificationTests extends TestBase {
 
   @BeforeMethod
   public void ensurePreconditions() {
-    app.getNavigationHelper().goToGroupPage();
+    app.goTo().GroupPage();
 
-    if (!app.getGroupHelper().isThereAGroup()) {
-      app.getGroupHelper().createGroup(new GroupData("test1", "test1", "test1"));
+    if (app.Group().List().size()==0) {
+      app.Group().create(new GroupData("test1", "test1", "test1"));
     }
   }
 
@@ -27,19 +26,22 @@ public class GroupModificationTests extends TestBase {
 
 
 
-    List<GroupData> before = app.getGroupHelper().getGroupList();
+    List<GroupData> before = app.Group().List();
     int index = before.size() - 1;
 
     GroupData group = new GroupData(before.get(index).getId(), "test1", "test2", "test3");
 
-    app.getGroupHelper().modifyGroup(index, group);
+    app.Group().modify(index, group);
 
-    List<GroupData> after = app.getGroupHelper().getGroupList();
+    List<GroupData> after = app.Group().List();
     Assert.assertEquals(after.size(), before.size());
 
     before.remove(index);
     before.add(group);
-    Assert.assertEquals(new HashSet<Object>(before), new HashSet<Object>(after));
+    Comparator<? super GroupData> byId = (g1,g2) -> Integer.compare(g1.getId(),g2.getId());
+    before.sort(byId);
+    after.sort(byId);
+    Assert.assertEquals(before, after);
 
   }
 
