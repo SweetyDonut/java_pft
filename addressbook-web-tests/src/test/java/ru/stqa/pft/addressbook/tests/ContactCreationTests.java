@@ -17,7 +17,11 @@ public class ContactCreationTests extends TestBase {
     app.goTo().HomePage();
 
     Contacts before = app.contact().all();
-    ContactData contact = new ContactData().withFirstname("Danil").withLastname("Babin").withHomephone("88-8").withMobilephone("3 33").withWorkphone("777()g").withAddress("polsaya").withMail("1m").withMail2("2m").withMail3("3m");
+    ContactData contact = new ContactData()
+            .withFirstname("Danil").withLastname("Babin")
+            .withHomephone("88-8").withMobilephone("3 33")
+            .withWorkphone("777()g").withAddress("polsaya")
+            .withMail("1m").withMail2("2m").withMail3("3m");
 
     app.contact().create(contact);
 

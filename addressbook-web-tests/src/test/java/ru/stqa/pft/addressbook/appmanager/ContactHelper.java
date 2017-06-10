@@ -1,6 +1,5 @@
 package ru.stqa.pft.addressbook.appmanager;
 
-import com.sun.jndi.cosnaming.IiopUrl;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -9,9 +8,7 @@ import org.testng.Assert;
 import ru.stqa.pft.addressbook.model.ContactData;
 import ru.stqa.pft.addressbook.model.Contacts;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by Даниил on 21.05.2017.
@@ -157,5 +154,27 @@ public class ContactHelper extends HelperBase {
     return new ContactData().withId(contact.getId()).withFirstname(firstname).
             withLastname(lastname).withHomephone(home).withWorkphone(work).
             withMobilephone(mobile).withMail(mail).withMail2(mail2).withMail3(mail3).withAddress(address);
+  }
+  public ContactData infoFromViewPage(ContactData contact) {
+    goToViewPage(contact.getId());
+    String info[] = wd.findElement(By.cssSelector("div[id='content']")).getText().split("\n");
+
+    String firstname = wd.findElement(By.xpath("//*[@id=\"content\"]/b")).getText().split(" ")[0];
+    String lastname = wd.findElement(By.xpath("//*[@id=\"content\"]/b")).getText().split(" ")[1];
+    String address=info[1];
+    String home =info[3].substring(3);
+    String mobile=info[4].substring(3);
+    String work =info[5].substring(3);
+    String mail =info[7];
+    String mail2 =info[8];
+    String mail3=info[9];
+    wd.navigate().back();
+    return new ContactData().withId(contact.getId()).withFirstname(firstname).
+            withLastname(lastname).withHomephone(home).withWorkphone(work).
+            withMobilephone(mobile).withMail(mail).withMail2(mail2).withMail3(mail3).withAddress(mail3).withAddress(address);
+  }
+
+  private void goToViewPage(int id) {
+    wd.findElement(By.cssSelector(String.format("a[href='view.php?id=%s']", id))).click();
   }
 }

@@ -39,6 +39,8 @@ public class ContactMailTests extends TestBase {
   }
 
   private String getMergePhones(ContactData contact) {
-    return Arrays.asList(contact.getMail(),contact.getMail2(),contact.getMail3()).stream().filter((s -> !s.equals(""))).collect(Collectors.joining("\n"));
+    return Arrays.asList(contact.getMail(),contact.getMail2(),contact.getMail3())
+            .stream().filter((s -> !s.equals("")))
+            .collect(Collectors.joining("\n"));
   }
 }
