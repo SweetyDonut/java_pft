@@ -1,7 +1,9 @@
 package ru.stqa.pft.addressbook.model;
 
 import com.google.common.collect.ForwardingSet;
+import com.sun.prism.impl.FactoryResetException;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -9,8 +11,38 @@ import java.util.Set;
  */
 public class Groups extends ForwardingSet<GroupData>{
 
+  private Set<GroupData> delegate;
+
+  public Groups(Groups groups){
+    this.delegate = new HashSet<GroupData>(groups.delegate);
+
+  }
+
+  public Groups() {
+    this.delegate = new HashSet<>();
+  }
+
   @Override
   protected Set<GroupData> delegate() {
-    return null;
+    return delegate;
+  }
+
+  public Groups withAdded(GroupData group ){
+    Groups groups = new Groups(this);
+    groups.add(group);
+    return groups;
+  }
+
+  public Groups without(GroupData group)
+  {
+    Groups groups = new Groups(this);
+    groups.remove(group);
+    return groups;
+  }
+  public Groups withModified(GroupData modifiedContact, GroupData contact){
+    Groups groups = new Groups(this);
+    groups.remove(modifiedContact);
+    groups.add(contact);
+    return groups;
   }
 }
