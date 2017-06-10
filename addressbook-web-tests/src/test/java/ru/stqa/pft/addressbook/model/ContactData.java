@@ -11,12 +11,51 @@ public class ContactData {
   private String homephone;
   private String workphone;
   private String mail;
+  private String mail2;
+  private String mail3;
   private String group;
+  private String allPhones;
+  private String allMails;
 
+  public String getMail2() {
+    return mail2;
+  }
+
+  public String getMail3() {
+    return mail3;
+  }
+
+  public ContactData withMail2(String mail2) {
+    this.mail2 = mail2;
+    return this;
+  }
+
+  public ContactData withMail3(String mail3) {
+    this.mail3 = mail3;
+    return this;
+  }
+
+  public String getAllMails() {
+    return allMails;
+  }
+  public ContactData withAllMails(String allMails) {
+    this.allMails = allMails;
+    return this;
+  }
 
   public int getId() {
     return id;
   }
+
+  public String getAllPhones() {
+    return allPhones;
+  }
+
+  public ContactData withAllPhones(String allPhones) {
+    this.allPhones = allPhones;
+    return this;
+  }
+
 
   public ContactData withId(int id) {
     this.id = id;
@@ -141,5 +180,7 @@ public class ContactData {
     result = 31 * result + (lastname != null ? lastname.hashCode() : 0);
     return result;
   }
+
+
 }
 

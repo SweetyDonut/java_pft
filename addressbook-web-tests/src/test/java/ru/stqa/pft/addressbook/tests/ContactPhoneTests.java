@@ -6,12 +6,15 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.ContactData;
 
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
 /**
  * Created by Даниил on 10.06.2017.
  */
 
 
-public class CotactPhoneTests extends TestBase {
+public class ContactPhoneTests extends TestBase {
 
   @BeforeMethod
   public void ensurePreconditions() {
@@ -24,15 +27,20 @@ public class CotactPhoneTests extends TestBase {
 
     @Test
     public void testContactPhone () {
-      app.goTo().HomePage();
       ContactData contact = app.contact().all().iterator().next();
       ContactData contactInfoFromEditor = app.contact().infoFromEditForm(contact);
-      MatcherAssert.assertThat(contact.getHomephone(), CoreMatchers.equalTo(cleaned(contactInfoFromEditor.getHomephone())));
-      MatcherAssert.assertThat(contact.getMobilephone(),CoreMatchers.equalTo(cleaned(contactInfoFromEditor.getMobilephone())));
-      MatcherAssert.assertThat(contact.getWorkPhone(), CoreMatchers.equalTo(cleaned(contactInfoFromEditor.getWorkPhone())));
+      MatcherAssert.assertThat(contact.getAllPhones(), CoreMatchers.equalTo(getMergePhones(contactInfoFromEditor)));
+
     }
 
-  public String cleaned(String phone){
+  private String getMergePhones(ContactData contact) {
+    return Arrays.asList(contact.getHomephone(),contact.getMobilephone(),contact.getWorkPhone())
+            .stream().filter((s)->!s.equals(""))
+            .map(ContactPhoneTests::cleaned)
+            .collect(Collectors.joining("\n"));
+  }
+
+  public static String cleaned(String phone){
     return phone.replaceAll("\\s","").replaceAll("[-()]","");
   }
 
