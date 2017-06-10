@@ -7,8 +7,9 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import ru.stqa.pft.addressbook.model.ContactData;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Даниил on 21.05.2017.
@@ -27,8 +28,8 @@ public class ContactHelper extends HelperBase {
     return wd.findElements(By.name("selected[]")).size();
   }
 
-  public List<ContactData> List() {
-    List<ContactData> contacts = new ArrayList<ContactData>();
+  public Set<ContactData> all() {
+    Set<ContactData> contacts = new HashSet<>();
     List<WebElement> elements = wd.findElements(By.name("entry"));
     for (WebElement element : elements) {
 
@@ -58,14 +59,15 @@ public class ContactHelper extends HelperBase {
     click(By.xpath("//div[@id='content']/form[2]/div[2]/input"));
   }
 
-  public void initModification(int index) {
-    wd.findElements(By.cssSelector("a[href*=\"edit.php?\"]")).get(index).click();
-    //String selector = "//table[@id='maintable']/tbody/tr["+index+" ]/td[8]/a/img";
 
+  public void initModificationById(int id) {
+    wd.findElement(By.cssSelector("a[href='edit.php?id=" + id + "']")).click();
+    //String selector = "//table[@id='maintable']/tbody/tr["+index+" ]/td[8]/a/img";
   }
 
-  public void select(int index) {
-    wd.findElements(By.name("selected[]")).get(index).click();
+
+  public void selectById(int id) {
+    wd.findElement(By.cssSelector("input[value='" + id + "']")).click();
 
   }
 
@@ -109,14 +111,14 @@ public class ContactHelper extends HelperBase {
 
   }
 
-  public void delite(int index) {
-    select(index);
+  public void delite(ContactData contact) {
+    selectById(contact.getId());
     initDelition();
     submitDelition();
   }
 
-  public void modify(int index, ContactData contact) {
-    initModification(index);
+  public void modify(ContactData contact) {
+    initModificationById(contact.getId());
     fillForm(contact, false);
     submitModification();
     returnToHomePage();

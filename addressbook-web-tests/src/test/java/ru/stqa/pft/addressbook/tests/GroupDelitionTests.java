@@ -6,6 +6,7 @@ import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.GroupData;
 
 import java.util.List;
+import java.util.Set;
 
 public class GroupDelitionTests extends TestBase {
 
@@ -13,25 +14,24 @@ public class GroupDelitionTests extends TestBase {
   public void ensurePreconditions(){
     app.goTo().GroupPage();
 
-    if (app.Group().List().size()==0) {
-      app.Group().create(new GroupData().withName("test1"));
+    if (app.group().all().size()==0) {
+      app.group().create(new GroupData().withName("test1"));
     }
   }
 
   @Test
   public void testGroupDelition() {
+    Set<GroupData> before = app.group().all();
+
+    GroupData deletedGroup = before.iterator().next();
+
+    app.group().delete(deletedGroup);
 
 
-    List<GroupData> before = app.Group().List();
-    int index = before.size() - 1;
+    List<GroupData> after = app.group().List();
+    Assert.assertEquals(after.size(), before.size()-1);
 
-    app.Group().delete(index);
-
-
-    List<GroupData> after = app.Group().List();
-    Assert.assertEquals(after.size(), index);
-
-    before.remove(index);
+    before.remove(deletedGroup);
     Assert.assertEquals(before, after);
 
 
