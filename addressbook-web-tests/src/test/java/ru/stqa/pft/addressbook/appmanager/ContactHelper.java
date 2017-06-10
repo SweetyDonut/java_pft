@@ -17,6 +17,8 @@ import java.util.Set;
  */
 public class ContactHelper extends HelperBase {
 
+  private Contacts contactCashe= null;
+
   public ContactHelper(WebDriver wd) {
     super(wd);
   }
@@ -30,26 +32,23 @@ public class ContactHelper extends HelperBase {
   }
 
   public Contacts all() {
-    Contacts contacts = new Contacts();
+    if (contactCashe!=null){
+      return contactCashe;
+    }
+    contactCashe = new Contacts();
     List<WebElement> elements = wd.findElements(By.name("entry"));
     for (WebElement element : elements) {
-
       int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("id"));
       String lastName = element.findElements(By.tagName("td")).get(1).getText();
       String firstName = element.findElements(By.tagName("td")).get(2).getText();
       ContactData contact = new ContactData().withId(id).withFirstname(firstName).withLastname(lastName);
-      contacts.add(contact);
+      contactCashe.add(contact);
     }
 
-    return contacts;
+    return contactCashe;
   }
 
-  public void create(ContactData contact) {
-    initCreation();
-    fillForm(contact, true);
-    submitCreation();
-    returnToHomePage();
-  }
+
 
   public void initCreation() {
     click(By.linkText("add new"));
@@ -116,12 +115,22 @@ public class ContactHelper extends HelperBase {
     selectById(contact.getId());
     initDelition();
     submitDelition();
+    contactCashe=null;
+
   }
 
   public void modify(ContactData contact) {
     initModificationById(contact.getId());
     fillForm(contact, false);
     submitModification();
+    contactCashe=null;
+    returnToHomePage();
+  }
+  public void create(ContactData contact) {
+    initCreation();
+    fillForm(contact, true);
+    submitCreation();
+    contactCashe=null;
     returnToHomePage();
   }
 }

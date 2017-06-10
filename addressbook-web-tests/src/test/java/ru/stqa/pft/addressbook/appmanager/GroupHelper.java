@@ -15,6 +15,7 @@ import java.util.Set;
  * Created by Даниил on 21.05.2017.
  */
 public class GroupHelper extends HelperBase {
+  private Groups groupCache = null;
 
   public GroupHelper(WebDriver wd) {
     super(wd);
@@ -40,20 +41,9 @@ public class GroupHelper extends HelperBase {
     return groups;
   }
 
-  public void create(GroupData group) {
-    initCreation();
-    fillForm(group);
-    submitCreation();
-    returnToGroupPage();
-  }
 
-  public void modify(GroupData group) {
-    selectById(group.getId());
-    initModification();
-    fillForm(group);
-    submitModification();
-    returnToGroupPage();
-  }
+
+
 
   public void select(int index) {
     wd.findElements(By.name("selected[]")).get(index).click();
@@ -94,28 +84,43 @@ public class GroupHelper extends HelperBase {
     click(By.linkText("group page"));
   }
 
-  public void delete(int index) {
-    select(index);
-    deleteSelected();
-    returnToGroupPage();
-
-  }
 
   public Groups all() {
-    Groups groups = new Groups();
+    if (groupCache!=null){
+      return new Groups(groupCache);
+    }
+    groupCache = new Groups();
     List<WebElement> elements = wd.findElements(By.cssSelector("span.group"));
     for (WebElement element : elements) {
       String name = element.getText();
       int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("value"));
       GroupData group = new GroupData().withName(name).withId(id);
-      groups.add(group);
+      groupCache.add(group);
     }
-    return groups;
+    return new Groups(groupCache);
   }
 
   public void delete(GroupData group) {
     selectById(group.getId());
     deleteSelected();
+    groupCache = null;
+    returnToGroupPage();
+  }
+
+  public void modify(GroupData group) {
+    selectById(group.getId());
+    initModification();
+    fillForm(group);
+    submitModification();
+    groupCache = null;
+    returnToGroupPage();
+  }
+
+  public void create(GroupData group) {
+    initCreation();
+    fillForm(group);
+    submitCreation();
+    groupCache = null;
     returnToGroupPage();
   }
 }
