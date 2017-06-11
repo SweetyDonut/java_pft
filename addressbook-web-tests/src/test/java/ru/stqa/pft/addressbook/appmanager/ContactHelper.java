@@ -157,21 +157,9 @@ public class ContactHelper extends HelperBase {
   }
   public ContactData infoFromViewPage(ContactData contact) {
     goToViewPage(contact.getId());
-    String info[] = wd.findElement(By.cssSelector("div[id='content']")).getText().split("\n");
-
-    String firstname = wd.findElement(By.xpath("//*[@id=\"content\"]/b")).getText().split(" ")[0];
-    String lastname = wd.findElement(By.xpath("//*[@id=\"content\"]/b")).getText().split(" ")[1];
-    String address=info[1];
-    String home =info[3].substring(3);
-    String mobile=info[4].substring(3);
-    String work =info[5].substring(3);
-    String mail =info[7];
-    String mail2 =info[8];
-    String mail3=info[9];
+    String viewInfo = wd.findElement(By.id("content")).getText();
     wd.navigate().back();
-    return new ContactData().withId(contact.getId()).withFirstname(firstname).
-            withLastname(lastname).withHomephone(home).withWorkphone(work).
-            withMobilephone(mobile).withMail(mail).withMail2(mail2).withMail3(mail3).withAddress(mail3).withAddress(address);
+    return new ContactData().withAllInfo(viewInfo);
   }
 
   private void goToViewPage(int id) {

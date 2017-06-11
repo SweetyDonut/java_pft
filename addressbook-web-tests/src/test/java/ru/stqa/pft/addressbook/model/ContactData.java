@@ -16,6 +16,8 @@ public class ContactData {
   private String group;
   private String allPhones;
   private String allMails;
+  private String allInfo;
+
 
   public String getMail2() {
     return mail2;
@@ -40,6 +42,13 @@ public class ContactData {
   }
   public ContactData withAllMails(String allMails) {
     this.allMails = allMails;
+    return this;
+  }
+  public String getAllInfo() {
+    return allInfo;
+  }
+  public ContactData withAllInfo(String allInfo) {
+    this.allInfo = allInfo;
     return this;
   }
 
@@ -180,6 +189,7 @@ public class ContactData {
     result = 31 * result + (lastname != null ? lastname.hashCode() : 0);
     return result;
   }
+
 
 
 }
