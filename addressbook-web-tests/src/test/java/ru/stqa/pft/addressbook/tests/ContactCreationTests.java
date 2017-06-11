@@ -1,9 +1,11 @@
 package ru.stqa.pft.addressbook.tests;
 
+import org.apache.xpath.SourceTree;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.ContactData;
 import ru.stqa.pft.addressbook.model.Contacts;
 
+import java.io.File;
 import java.util.Set;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -17,11 +19,10 @@ public class ContactCreationTests extends TestBase {
     app.goTo().HomePage();
 
     Contacts before = app.contact().all();
+    File photo = new File("src/test/resources/stru.png");
     ContactData contact = new ContactData()
             .withFirstname("Danil").withLastname("Babin")
-            .withHomephone("88-8").withMobilephone("3 33")
-            .withWorkphone("777()g").withAddress("polsaya")
-            .withMail("1m").withMail2("2m").withMail3("3m");
+            .withPhoto(photo);
 
     app.contact().create(contact);
 
@@ -29,6 +30,8 @@ public class ContactCreationTests extends TestBase {
     Set<ContactData> after = app.contact().all();
     assertThat(after, equalTo(before.withAdded( contact.withId(after.stream().mapToInt((g) -> g.getId()).max().getAsInt()))));
   }
+
+
 
 
 
