@@ -30,7 +30,7 @@ public class ContactCreationTests extends TestBase {
     try (BufferedReader reader = new BufferedReader(
             new FileReader(
                     new File("src/test/resources/contactss.xml")))) {
-      File photo = new File("src/test/resources/stru.png");
+     /* File photo = new File("src/test/resources/stru.png");*/
       String xml = " ";
       List<Object[]> list = new ArrayList<Object[]>();
       String line = reader.readLine();
@@ -50,7 +50,11 @@ public class ContactCreationTests extends TestBase {
       XStream xstream = new XStream();
       xstream.processAnnotations(ContactData.class);
       List<ContactData> contacts = (List<ContactData>) xstream.fromXML(xml);
-      contacts.stream().map((g) -> new Object[]{g}).collect(Collectors.toList()).iterator();
+
+   /*   for (ContactData contact: contacts
+           ) {
+        contact.withPhoto(photo);
+      }*/
 
       return contacts.stream().map((g) -> new Object[]{g}).collect(Collectors.toList()).iterator();
     }
@@ -61,7 +65,7 @@ public class ContactCreationTests extends TestBase {
     try (BufferedReader reader = new BufferedReader(
             new FileReader(
                     new File("src/test/resources/contacts.json")))) {
-      File photo = new File("src/test/resources/stru.png");
+      //File photo = new File("src/test/resources/stru.png");
       String json = " ";
       List<Object[]> list = new ArrayList<Object[]>();
       String line = reader.readLine();
@@ -73,20 +77,27 @@ public class ContactCreationTests extends TestBase {
       Gson gson = new Gson();
       List<ContactData> contacts = gson.fromJson(json, new TypeToken<List<ContactData>>() {
       }.getType());
+
+ /*     for (ContactData contact: contacts
+              ) {
+        contact.withPhoto(photo);
+      }*/
       return contacts.stream().map((g) -> new Object[]{g}).collect(Collectors.toList()).iterator();
     }
   }
   @Test (dataProvider = "validContactsFromJson")
   public void testContactCreation(ContactData contact) {
 
-    app.goTo().HomePage();
 
-    Contacts before = app.contact().all();
+
+
+    Contacts before = app.db().contacts();
 
     app.contact().create(contact);
-
+    app.goTo().HomePage();
+    System.out.println(app.contact().Count());
     assertThat(app.contact().Count(), equalTo(before.size()+1));
-    Set<ContactData> after = app.contact().all();
+    Set<ContactData> after = app.db().contacts();
     assertThat(after, equalTo(before.withAdded( contact.withId(after.stream().mapToInt((g) -> g.getId()).max().getAsInt()))));
   }
 

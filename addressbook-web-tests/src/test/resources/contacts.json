@@ -5,19 +5,6 @@
     "address": "Adress 0",
     "mobilephone": "MobilePhone 0",
     "mail": "mail 0"
-  },
-  {
-    "firstname": "Name 1",
-    "lastname": "Lastname 1",
-    "address": "Adress 1",
-    "mobilephone": "MobilePhone 1",
-    "mail": "mail 1"
-  },
-  {
-    "firstname": "Name 2",
-    "lastname": "Lastname 2",
-    "address": "Adress 2",
-    "mobilephone": "MobilePhone 2",
-    "mail": "mail 2"
   }
+
 ]

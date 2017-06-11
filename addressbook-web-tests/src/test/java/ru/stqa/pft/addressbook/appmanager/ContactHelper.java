@@ -96,7 +96,7 @@ public class ContactHelper extends HelperBase {
     type(By.name("email"), contactData.getMail());
     type(By.name("email2"), contactData.getMail2());
     type(By.name("email3"), contactData.getMail3());
-    attach (By.name("photo"),contactData.getPhoto());
+    /*attach (By.name("photo"),contactData.getPhoto());*/
 
     if (creation) {
       if (contactData.getGroup() != null) {
@@ -135,7 +135,7 @@ public class ContactHelper extends HelperBase {
     fillForm(contact, true);
     submitCreation();
     contactCashe = null;
-    returnToHomePage();
+    //returnToHomePage();
   }
 
   public ContactData infoFromEditForm(ContactData contact) {
