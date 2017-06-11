@@ -1,5 +1,6 @@
 package ru.stqa.pft.addressbook.model;
 
+import com.google.gson.annotations.Expose;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
 
@@ -8,14 +9,23 @@ import java.io.File;
 public class ContactData {
   @XStreamOmitField
   private int id = Integer.MAX_VALUE;
+  @Expose
   private String firstname;
+
   private String middlename;
+  @Expose
   private String lastname;
+
   private String nickname;
+  @Expose
   private String address;
+  @Expose
   private String mobilephone;
+
   private String homephone;
+
   private String workphone;
+  @Expose
   private String mail;
   private String mail2;
   private String mail3;
