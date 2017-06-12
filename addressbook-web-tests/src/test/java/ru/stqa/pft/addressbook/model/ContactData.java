@@ -7,6 +7,10 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.io.File;
+import java.security.acl.Group;
+import java.util.HashSet;
+import java.util.Set;
+
 @XStreamAlias("contact")
 @Entity
 @Table(name = "addressbook")
@@ -61,10 +65,19 @@ public class ContactData {
   @Type(type="text")
   private String mail3="";
 
+  public Groups getGroups() {
+    return new Groups(groups) ;
+  }
+
+  public void setGroups(Set<GroupData> groups) {
+    this.groups = groups;
+  }
+
+  @ManyToMany(fetch = FetchType.EAGER)
+  @JoinTable(name = "address_in_groups", joinColumns = @JoinColumn(name="id"),inverseJoinColumns =@JoinColumn(name="group_id"))
+  private Set<GroupData> groups = new HashSet<GroupData>();
 
 
-  @Transient
-  private String group;
   @Transient
   private String allPhones="";
 
@@ -187,10 +200,6 @@ public class ContactData {
     return this;
   }
 
-  public ContactData withGroup(String group) {
-    this.group = group;
-    return this;
-  }
 
   public String getFirstname() {
     return firstname;
@@ -228,9 +237,7 @@ public class ContactData {
     return mail;
   }
 
-  public String getGroup() {
-    return group;
-  }
+
 
   @Override
   public boolean equals(Object o) {
@@ -291,11 +298,15 @@ public class ContactData {
             ", mail='" + mail + '\'' +
             ", mail2='" + mail2 + '\'' +
             ", mail3='" + mail3 + '\'' +
-            ", group='" + group + '\'' +
             ", allPhones='" + allPhones + '\'' +
             ", allMails='" + allMails + '\'' +
             ", allInfo='" + allInfo + '\'' +
             '}';
+  }
+
+  public ContactData inGroup(GroupData group) {
+    groups.add(group);
+    return this;
   }
 }
 
