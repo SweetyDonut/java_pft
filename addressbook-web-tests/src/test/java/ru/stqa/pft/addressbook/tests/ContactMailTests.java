@@ -1,15 +1,10 @@
 package ru.stqa.pft.addressbook.tests;
 
-import org.hamcrest.CoreMatchers;
-import org.hamcrest.MatcherAssert;
-import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.ContactData;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
-import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -34,11 +29,11 @@ public class ContactMailTests extends TestBase {
   public void testContactMail(){
     ContactData contact = app.contact().all().iterator().next();
     ContactData contactInfoFromEditor = app.contact().infoFromEditForm(contact);
-    assertThat(contact.getAllMails(), equalTo(getMergePhones(contactInfoFromEditor)));
+    assertThat(contact.getAllMails(), equalTo(getMergeMails(contactInfoFromEditor)));
 
   }
 
-  private String getMergePhones(ContactData contact) {
+  private String getMergeMails(ContactData contact) {
     return Arrays.asList(contact.getMail(),contact.getMail2(),contact.getMail3())
             .stream().filter((s -> !s.equals("")))
             .collect(Collectors.joining("\n"));

@@ -46,8 +46,6 @@ public class ContactHelper extends HelperBase {
       ContactData contact = new ContactData().withId(id).withFirstname(firstName).withLastname(lastName).withAllPhones(allPhones).withAddress(address).withAllMails(allMails);
       contactCashe.add(contact);
     }
-
-
     return contactCashe;
   }
 
@@ -149,8 +147,6 @@ public class ContactHelper extends HelperBase {
     String mail2 = wd.findElement(By.name("email2")).getAttribute("value");
     String mail3 = wd.findElement(By.name("email3")).getAttribute("value");
     String address = wd.findElement(By.name("address")).getAttribute("value");
-
-
     wd.navigate().back();
     return new ContactData().withId(contact.getId()).withFirstname(firstname).
             withLastname(lastname).withHomephone(home).withWorkphone(work).
