@@ -7,6 +7,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import ru.stqa.pft.addressbook.model.ContactData;
 import ru.stqa.pft.addressbook.model.Contacts;
+import ru.stqa.pft.addressbook.model.GroupData;
 
 import java.util.List;
 
@@ -97,8 +98,9 @@ public class ContactHelper extends HelperBase {
     /*attach (By.name("photo"),contactData.getPhoto());*/
 
     if (creation) {
-      if (contactData.getGroup() != null) {
-        new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(contactData.getGroup());
+      if (contactData.getGroups().size() > 0) {
+        Assert.assertTrue(contactData.getGroups().size()==1);
+        new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(contactData.getGroups().iterator().next().getName());
       }
 
     } else {
@@ -162,4 +164,48 @@ public class ContactHelper extends HelperBase {
   private void goToViewPage(int id) {
     wd.findElement(By.cssSelector(String.format("a[href='view.php?id=%s']", id))).click();
   }
+
+  public void gotoHomePage() {
+    if (isElementPresent(By.id("maintable"))) {
+      return;
+    }
+    click(By.linkText("home"));
+  }
+  public void addToGroup(ContactData contact, GroupData group) {
+    selectById(contact.getId());
+    SelectedGroup(group);
+    contactCashe = null;
+    gotoHomePage();
+  }
+  public void SelectedGroup(GroupData group) {
+    new Select(wd.findElement(By.name("to_group"))).selectByValue(""+group.getId());
+    click(By.name("add"));
+  }
+  public void GoToGfilteredPage(){
+
+    wd.findElement(By.cssSelector("[href*='./?group']")).click();
+  }
+  public void removeFromGroup() {
+    click(By.cssSelector("input[name='remove']"));
+  }
+  public void GoToHPageWithoutGFilter(){
+
+    click(By.xpath("//*[@id=\"header\"]/a"));
+  }
+
+
+  public void deleteFromGroup(ContactData contact, GroupData group) {
+    selectById(contact.getId());
+    SelectedGroup(group);
+    GoToGfilteredPage();
+    selectById(contact.getId());
+    removeFromGroup();
+    contactCashe = null;
+    GoToHPageWithoutGFilter();
+  }
+
+
+
+
+
 }
