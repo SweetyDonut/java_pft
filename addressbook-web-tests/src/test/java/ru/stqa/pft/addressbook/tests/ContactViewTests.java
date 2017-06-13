@@ -40,14 +40,14 @@ public class ContactViewTests extends TestBase {
   private String mergeDetails(ContactData contact) {
 
 
-    return Arrays.asList(Arrays.asList(contact.getFirstname() + " " , contact.getLastname())
-                    .stream().filter((s) -> !(s.equals(" "))).collect(Collectors.joining()),contact.getAddress(),
-            Arrays.asList("","H: " + contact.getHomephone(),"M: " + contact.getMobilephone(), "W: " + contact.getWorkPhone())
-            .stream().filter((s) -> !(s.equals("M: ") || s.equals("W: ") || s.equals("H: "))).collect(Collectors.joining("\n")),
-            "\n"+Arrays.asList(contact.getMail(), contact.getMail2(), contact.getMail3()).stream()
+    return Arrays.asList(Arrays.asList(contact.getFirstname() + " ", contact.getLastname())
+                    .stream().filter((s) -> !(s.equals(" "))).collect(Collectors.joining()), contact.getAddress(),
+            Arrays.asList("", "H: " + contact.getHomephone(), "M: " + contact.getMobilephone(), "W: " + contact.getWorkPhone())
+                    .stream().filter((s) -> !(s.equals("M: ") || s.equals("W: ") || s.equals("H: "))).collect(Collectors.joining("\n")),
+            "\n" + Arrays.asList(contact.getMail(), contact.getMail2(), contact.getMail3()).stream()
                     .filter((s) -> !(s == null || s.equals(""))).collect(Collectors.joining("\n")))
             .stream().filter((s) -> !(s == null || s.equals("")))
-           .collect(Collectors.joining("\n"));
+            .collect(Collectors.joining("\n"));
   }
-
+}
 
