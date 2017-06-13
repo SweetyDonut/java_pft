@@ -46,7 +46,7 @@ public class ContactViewTests extends TestBase {
                     .stream().filter((s) -> !(s.equals("M: ") || s.equals("W: ") || s.equals("H: "))).collect(Collectors.joining("\n")),
             "\n" + Arrays.asList(contact.getMail(), contact.getMail2(), contact.getMail3()).stream()
                     .filter((s) -> !(s == null || s.equals(""))).collect(Collectors.joining("\n")))
-            .stream().filter((s) -> !(s == null || s.equals("")))
+            .stream().filter((s) -> !(s == null || s.equals("")||s.equals("\n")))
             .collect(Collectors.joining("\n"));
   }
 }
