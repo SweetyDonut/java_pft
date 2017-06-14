@@ -54,7 +54,7 @@ public class HttpSession {
     return body.contains(String.format("<span class=\"user-info\">%s</span>", username));
   }
 
-  private String getTextFrom(CloseableHttpResponse response) throws IOException { // получение текста ответа
+  private String getTextFrom(CloseableHttpResponse response) throws IOException {
     try { //закрытие
       return EntityUtils.toString(response.getEntity());
     } finally {

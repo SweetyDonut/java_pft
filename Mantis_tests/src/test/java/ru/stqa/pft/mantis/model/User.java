@@ -1,6 +1,6 @@
 package ru.stqa.pft.mantis.model;
 
-import org.hibernate.annotations.Type;
+
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,19 +32,12 @@ public class User {
     return id;
   }
 
-  public void setId(int id) {
-    this.id = id;
-  }
+
 
   public  String getUsername() {
     return username;
   }
 
-
-  public User withPassword(String password) {
-    this.password = password;
-    return this;
-  }
 
   public  String getEmail() {
     return email;
