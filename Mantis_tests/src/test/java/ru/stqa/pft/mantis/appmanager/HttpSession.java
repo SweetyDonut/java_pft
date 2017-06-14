@@ -29,18 +29,29 @@ public class HttpSession {
     httpClient= HttpClients.custom().setRedirectStrategy(new LaxRedirectStrategy()).build();
 
   }
-
-  public boolean login(String username, String password) throws IOException { // выполнение логина
-    HttpPost post = new HttpPost(app.getProperty("web.baseUrl") + "login.php"); //отправка запроса по адресу. созданеи запроса.
-    List<NameValuePair> params = new ArrayList<>(); // формируется набор параметров
+  public  void adminLogin(String username, String password) throws IOException {
+    HttpPost post = new HttpPost(app.getProperty("web.baseUrl") + "login.php");
+    List<NameValuePair> params = new ArrayList<>();
     params.add(new BasicNameValuePair("username", username));
     params.add(new BasicNameValuePair("password", password));
     params.add(new BasicNameValuePair("secure_session", "on"));
     params.add(new BasicNameValuePair("return", "index.php"));
-    post.setEntity(new UrlEncodedFormEntity(params)); // упаковка параметров
-    CloseableHttpResponse response = httpClient.execute(post); // отправка запроса - результат ответ
+    post.setEntity(new UrlEncodedFormEntity(params));
+    CloseableHttpResponse response = httpClient.execute(post);
     String body = getTextFrom(response);
-    return body.contains(String.format("<span class=\"label hidden-xs label-default arrowed\">%s</span>", username));// проверка вошел ли пользователь в систему
+  }
+
+  public boolean login(String username, String password) throws IOException {
+    HttpPost post = new HttpPost(app.getProperty("web.baseUrl") + "login.php");
+    List<NameValuePair> params = new ArrayList<>();
+    params.add(new BasicNameValuePair("username", username));
+    params.add(new BasicNameValuePair("password", password));
+    params.add(new BasicNameValuePair("secure_session", "on"));
+    params.add(new BasicNameValuePair("return", "index.php"));
+    post.setEntity(new UrlEncodedFormEntity(params));
+    CloseableHttpResponse response = httpClient.execute(post);
+    String body = getTextFrom(response);
+    return body.contains(String.format("<span class=\"user-info\">%s</span>", username));
   }
 
   private String getTextFrom(CloseableHttpResponse response) throws IOException { // получение текста ответа
@@ -52,11 +63,11 @@ public class HttpSession {
       }
     }
   }
-  public boolean isLoggedInAs(String username) throws IOException { //какой пользователь сейчас залогинен
-    HttpGet get = new HttpGet(app.getProperty("web.baseUrl")+ "index.php"); // обращение к странице
-    CloseableHttpResponse response =  httpClient.execute(get); //выполнение запроса гет
+  public boolean isLoggedInAs(String username) throws IOException {
+    HttpGet get = new HttpGet(app.getProperty("web.baseUrl")+ "index.php");
+    CloseableHttpResponse response =  httpClient.execute(get);
     String body = getTextFrom(response); //получение текста
-    return body.contains(String.format("<span class=\"label hidden-xs label-default arrowed\">%s</span>", username)); // проверка текста страницы на содержание нужной инфы
+    return body.contains(String.format("<span class=\"user-info\">%s</span>", username));
   }
 
 
