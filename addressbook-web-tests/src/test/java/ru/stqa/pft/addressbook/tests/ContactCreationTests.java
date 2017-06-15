@@ -12,10 +12,13 @@ import ru.stqa.pft.addressbook.model.GroupData;
 import ru.stqa.pft.addressbook.model.Groups;
 
 
+import javax.xml.rpc.ServiceException;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -101,8 +104,8 @@ public class ContactCreationTests extends TestBase {
 
 
   @Test (dataProvider = "validContactsFromJson")
-  public void testContactCreation(ContactData contact) {
-
+  public void testContactCreation(ContactData contact) throws RemoteException, ServiceException, MalformedURLException {
+    isIssueOpen(0000001);
     Groups groups = app.db().groups();
     Contacts before = app.db().contacts();
     contact.inGroup(groups.iterator().next());

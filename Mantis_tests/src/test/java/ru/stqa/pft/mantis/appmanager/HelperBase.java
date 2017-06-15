@@ -15,7 +15,7 @@ public class HelperBase {
   protected WebDriver wd;
 
   public HelperBase(ApplicationManager app) {
-    this.app=app;
+    this.app = app;
     this.wd = app.getDriver();
 
   }
@@ -62,4 +62,6 @@ public class HelperBase {
       return false;
     }
   }
+
+
 }

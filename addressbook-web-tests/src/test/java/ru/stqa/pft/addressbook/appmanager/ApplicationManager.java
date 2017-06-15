@@ -56,7 +56,9 @@ public class ApplicationManager {
 
 
   }
-
+  public String getProperty(String key){
+    return properties.getProperty(key);
+  }
   public void stop() {
     wd.quit();
   }

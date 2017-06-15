@@ -15,6 +15,7 @@ import ru.stqa.pft.mantis.appmanager.HttpSession;
 import ru.stqa.pft.mantis.model.MailMessage;
 import ru.stqa.pft.mantis.model.User;
 
+import javax.xml.rpc.ServiceException;
 import java.io.IOException;
 import java.util.List;
 
@@ -29,8 +30,8 @@ public class PasswordChangeTests extends TestBase {
 
 
   @Test
-  public void testUserPasswordChange() throws IOException, MessagingException, javax.mail.MessagingException {
-
+  public void testUserPasswordChange() throws IOException, MessagingException, javax.mail.MessagingException, ServiceException {
+    isIssueOpen(00000002);
     HttpSession session = app.newSession();
     User user = app.db().getUser();
     String newPassword = "psswd";
