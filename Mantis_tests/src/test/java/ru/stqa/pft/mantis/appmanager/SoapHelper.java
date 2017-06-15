@@ -34,7 +34,7 @@ public class SoapHelper {
 
   private MantisConnectPortType getMantisConnect() throws ServiceException, MalformedURLException {
     return new MantisConnectLocator()
-            .getMantisConnectPort(new URL(System.getProperty(System.getProperty("web.soapURL"))));
+            .getMantisConnectPort(new URL(System.getProperty(app.getProperty("web.soapURL"))));
   }
 
   public Issue addIssue(Issue issue) throws MalformedURLException, ServiceException, RemoteException {
