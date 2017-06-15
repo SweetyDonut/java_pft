@@ -2,6 +2,9 @@ package ru.stqa.pft.addressbook.tests;
 
 import biz.futureware.mantis.rpc.soap.client.MantisConnectLocator;
 import biz.futureware.mantis.rpc.soap.client.MantisConnectPortType;
+import com.google.gson.*;
+import org.apache.http.client.fluent.Executor;
+import org.apache.http.client.fluent.Request;
 import org.hamcrest.CoreMatchers;
 import org.hamcrest.MatcherAssert;
 import org.openqa.selenium.remote.BrowserType;
@@ -19,6 +22,7 @@ import ru.stqa.pft.addressbook.model.GroupData;
 import ru.stqa.pft.addressbook.model.Groups;
 
 import javax.xml.rpc.ServiceException;
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.math.BigInteger;
 import java.net.MalformedURLException;
@@ -40,7 +44,7 @@ public class TestBase {
 
   Logger logger = LoggerFactory.getLogger(TestBase.class);
 
-  protected  static final ApplicationManager app = new ApplicationManager(System.getProperty("browser",BrowserType.CHROME));
+  protected static final ApplicationManager app = new ApplicationManager(System.getProperty("browser", BrowserType.CHROME));
 
   @BeforeSuite(alwaysRun = true)
 
@@ -55,31 +59,31 @@ public class TestBase {
   }
 
   @BeforeMethod
-  public void logTestStart(Method m, Object[]p){
-    logger.info("Start test "+m.getName()+" with parametrs "+ Arrays.asList(p));
+  public void logTestStart(Method m, Object[] p) {
+    logger.info("Start test " + m.getName() + " with parametrs " + Arrays.asList(p));
 
   }
 
   @AfterMethod(alwaysRun = true)
-  public void logTestStop(Method m){
-    logger.info("Stop test "+ m.getName());
+  public void logTestStop(Method m) {
+    logger.info("Stop test " + m.getName());
   }
 
   public void verifyGroupListInUI() {
-    if (Boolean.getBoolean("verifyUi")){
+    if (Boolean.getBoolean("verifyUi")) {
       Groups dbGroups = app.db().groups();
       Groups uiGroups = app.group().all();
       assertThat(uiGroups, equalTo(dbGroups.stream()
-              .map((g)->new GroupData().withId(g.getId()).withName(g.getName())).collect(Collectors.toSet())));
+              .map((g) -> new GroupData().withId(g.getId()).withName(g.getName())).collect(Collectors.toSet())));
     }
   }
 
   public void verifyContactListInUI() {
-    if (Boolean.getBoolean("verifyUi")){
+    if (Boolean.getBoolean("verifyUi")) {
       Contacts dbGroups = app.db().contacts();
       Contacts uiGroups = app.contact().all();
       assertThat(uiGroups, equalTo(dbGroups.stream()
-              .map((g)->new ContactData()
+              .map((g) -> new ContactData()
                       .withId(g.getId())
                       .withFirstname(g.getFirstname())
                       .withLastname(g.getLastname())
@@ -90,28 +94,49 @@ public class TestBase {
   }
 
   private String getMergePhones(ContactData contact) {
-    return Arrays.asList(contact.getHomephone(),contact.getMobilephone(),contact.getWorkPhone())
-            .stream().filter((s)->!s.equals(""))
+    return Arrays.asList(contact.getHomephone(), contact.getMobilephone(), contact.getWorkPhone())
+            .stream().filter((s) -> !s.equals(""))
             .map(ContactPhoneTests::cleaned)
             .collect(Collectors.joining("\n"));
   }
 
-  public static String cleaned(String phone){
-    return phone.replaceAll("\\s","").replaceAll("[-()]","");
+  public static String cleaned(String phone) {
+    return phone.replaceAll("\\s", "").replaceAll("[-()]", "");
   }
 
   private String getMergeMails(ContactData contact) {
-    return Arrays.asList(contact.getMail(),contact.getMail2(),contact.getMail3())
+    return Arrays.asList(contact.getMail(), contact.getMail2(), contact.getMail3())
             .stream().filter((s -> !s.equals("")))
             .collect(Collectors.joining("\n"));
   }
 
-  boolean isIssueOpen(int issueId) throws MalformedURLException, RemoteException, ServiceException {
-    MantisConnectPortType mc = new MantisConnectLocator().getMantisConnectPort(new URL(app.getProperty("web.soapURL")));
-    return mc.mc_issue_get("administrator", "root", BigInteger.valueOf(issueId)).getStatus().getName()!="resolved";
+  /* boolean isIssueOpen(int issueId) throws MalformedURLException, RemoteException, ServiceException {
+     MantisConnectPortType mc = new MantisConnectLocator().getMantisConnectPort(new URL(app.getProperty("web.soapURL")));
+     return mc.mc_issue_get("administrator", "root", BigInteger.valueOf(issueId)).getStatus().getName()!="resolved";
+   }
+
+   public void skipIfNotFixed(int issueId) throws RemoteException, ServiceException, MalformedURLException {
+     if (isIssueOpen(issueId)) {
+       throw new SkipException("Ignored because of issue " + issueId);
+     }
+   }*/
+  boolean isIssueOpen(int issueId) throws IOException {
+    String json = Executor.newInstance().auth("LSGjeU4yP1X493ud1hNniA==", "")
+            .execute(Request.Get((String.format("http://demo.bugify.com/api/issues/%s.json", issueId)))).returnContent().asString();
+
+    JsonObject parsed = new JsonParser().parse(json).getAsJsonObject();
+
+    JsonArray issues = parsed.getAsJsonArray("issues");
+
+    JsonObject info = issues.get(0).getAsJsonObject();
+
+    return info.get("state_name").getAsString()!="Closed" ;
+
+
+
   }
 
-  public void skipIfNotFixed(int issueId) throws RemoteException, ServiceException, MalformedURLException {
+  public void skipIfNotFixed(int issueId) throws IOException {
     if (isIssueOpen(issueId)) {
       throw new SkipException("Ignored because of issue " + issueId);
     }

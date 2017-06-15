@@ -104,8 +104,8 @@ public class ContactCreationTests extends TestBase {
 
 
   @Test (dataProvider = "validContactsFromJson")
-  public void testContactCreation(ContactData contact) throws RemoteException, ServiceException, MalformedURLException {
-    skipIfNotFixed(0000003);
+  public void testContactCreation(ContactData contact) throws IOException, ServiceException {
+    skipIfNotFixed(5);
     Groups groups = app.db().groups();
     Contacts before = app.db().contacts();
     contact.inGroup(groups.iterator().next());
