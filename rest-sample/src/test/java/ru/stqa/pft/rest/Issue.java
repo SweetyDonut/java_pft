@@ -26,12 +26,32 @@ public class Issue {
     return this;
   }
 
-  public String getDescripnion() {
+  public String getDescription() {
     return descripnion;
   }
 
   public Issue withDescripnion(String descripnion) {
     this.descripnion = descripnion;
     return this;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+
+    Issue issue = (Issue) o;
+
+    if (id != issue.id) return false;
+    if (subject != null ? !subject.equals(issue.subject) : issue.subject != null) return false;
+    return descripnion != null ? descripnion.equals(issue.descripnion) : issue.descripnion == null;
+  }
+
+  @Override
+  public int hashCode() {
+    int result = id;
+    result = 31 * result + (subject != null ? subject.hashCode() : 0);
+    result = 31 * result + (descripnion != null ? descripnion.hashCode() : 0);
+    return result;
   }
 }
