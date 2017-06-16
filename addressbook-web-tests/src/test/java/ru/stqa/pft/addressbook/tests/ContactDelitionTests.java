@@ -33,7 +33,7 @@ public class ContactDelitionTests extends TestBase {
   }
   @Test
   public void testContactDelition() throws RemoteException, ServiceException, MalformedURLException {
-    skipIfNotFixedInMantis(0000003);
+    //skipIfNotFixedInMantis(0000003);
     Contacts before = app.db().contacts();
     ContactData deletedContact = before.iterator().next();
 

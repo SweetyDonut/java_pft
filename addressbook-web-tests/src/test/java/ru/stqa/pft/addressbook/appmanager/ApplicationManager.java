@@ -22,7 +22,8 @@ import java.util.concurrent.TimeUnit;
  */
 public class ApplicationManager {
   private final Properties properties;
-  WebDriver wd = new RemoteWebDriver(new URL(properties.getProperty("selenium.server")));
+
+  WebDriver wd ;
 
   private NavigationHelper navigationHelper;
   private GroupHelper groupHelper;
@@ -54,7 +55,7 @@ public class ApplicationManager {
     else {
       DesiredCapabilities capabilities = new DesiredCapabilities();
       capabilities.setBrowserName(browser);
-      wd = new RemoteWebDriver(new URL(properties.getProperty("selenium.server")),capabilities)
+      wd = new RemoteWebDriver(new URL(properties.getProperty("selenium.server")),capabilities);
     }
 
     wd.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
