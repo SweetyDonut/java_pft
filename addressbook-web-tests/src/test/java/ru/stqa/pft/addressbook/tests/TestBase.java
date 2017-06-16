@@ -110,17 +110,20 @@ public class TestBase {
             .collect(Collectors.joining("\n"));
   }
 
-  /* boolean isIssueOpen(int issueId) throws MalformedURLException, RemoteException, ServiceException {
-     MantisConnectPortType mc = new MantisConnectLocator().getMantisConnectPort(new URL(app.getProperty("web.soapURL")));
-     return mc.mc_issue_get("administrator", "root", BigInteger.valueOf(issueId)).getStatus().getName()!="resolved";
-   }
+  boolean isIssueOpenInMantis(int issueId) throws MalformedURLException, RemoteException, ServiceException {
+    MantisConnectPortType mc = new MantisConnectLocator().getMantisConnectPort(new URL(app.getProperty("web.soapURL")));
+    return !(mc.mc_issue_get("administrator", "root", BigInteger.valueOf(issueId)).getStatus().getName().equals("resolved"));
+  }
 
-   public void skipIfNotFixed(int issueId) throws RemoteException, ServiceException, MalformedURLException {
-     if (isIssueOpen(issueId)) {
-       throw new SkipException("Ignored because of issue " + issueId);
-     }
-   }*/
-  boolean isIssueOpen(int issueId) throws IOException {
+  public void skipIfNotFixedInMantis(int issueId) throws RemoteException, ServiceException, MalformedURLException {
+    if (isIssueOpenInMantis(issueId)) {
+      throw new SkipException("Ignored because of issue " + issueId);
+    }
+  }
+
+
+  boolean isIssueOpenInBugify(int issueId) throws IOException {
+
     String json = Executor.newInstance().auth("LSGjeU4yP1X493ud1hNniA==", "")
             .execute(Request.Get((String.format("http://demo.bugify.com/api/issues/%s.json", issueId)))).returnContent().asString();
 
@@ -130,14 +133,11 @@ public class TestBase {
 
     JsonObject info = issues.get(0).getAsJsonObject();
 
-    return info.get("state_name").getAsString()!="Closed" ;
-
-
-
+    return !(info.get("state_name").getAsString().equals("Closed")) ;
   }
 
-  public void skipIfNotFixed(int issueId) throws IOException {
-    if (isIssueOpen(issueId)) {
+  public void skipIfNotFixedInBugify(int issueId) throws IOException {
+    if (isIssueOpenInBugify(issueId)) {
       throw new SkipException("Ignored because of issue " + issueId);
     }
   }

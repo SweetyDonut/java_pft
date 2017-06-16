@@ -105,7 +105,7 @@ public class ContactCreationTests extends TestBase {
 
   @Test (dataProvider = "validContactsFromJson")
   public void testContactCreation(ContactData contact) throws IOException, ServiceException {
-    skipIfNotFixed(5);
+    skipIfNotFixedInBugify(5);
     Groups groups = app.db().groups();
     Contacts before = app.db().contacts();
     contact.inGroup(groups.iterator().next());

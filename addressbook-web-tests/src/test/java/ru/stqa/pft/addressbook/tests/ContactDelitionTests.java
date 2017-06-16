@@ -8,6 +8,9 @@ import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.ContactData;
 import ru.stqa.pft.addressbook.model.Contacts;
 
+import javax.xml.rpc.ServiceException;
+import java.net.MalformedURLException;
+import java.rmi.RemoteException;
 import java.util.Set;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -29,8 +32,8 @@ public class ContactDelitionTests extends TestBase {
 
   }
   @Test
-  public void testContactDelition() {
-
+  public void testContactDelition() throws RemoteException, ServiceException, MalformedURLException {
+    skipIfNotFixedInMantis(0000003);
     Contacts before = app.db().contacts();
     ContactData deletedContact = before.iterator().next();
 

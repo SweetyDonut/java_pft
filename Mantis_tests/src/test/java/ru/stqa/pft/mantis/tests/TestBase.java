@@ -1,5 +1,7 @@
 package ru.stqa.pft.mantis.tests;
 
+import biz.futureware.mantis.rpc.soap.client.MantisConnectLocator;
+import biz.futureware.mantis.rpc.soap.client.MantisConnectPortType;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -11,8 +13,13 @@ import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 import ru.stqa.pft.mantis.appmanager.ApplicationManager;
 
+import javax.xml.rpc.ServiceException;
 import java.io.File;
 import java.io.IOException;
+import java.math.BigInteger;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.rmi.RemoteException;
 
 
 /**
@@ -38,18 +45,19 @@ public class TestBase {
     app.ftp().restore("config_inc.php.bak", "config_inc.php");
     app.stop();
   }
-/*  boolean isIssueOpen(int issueId) throws MalformedURLException, RemoteException, ServiceException {
+  boolean isIssueOpenInMantis(int issueId) throws MalformedURLException, RemoteException, ServiceException {
     MantisConnectPortType mc = new MantisConnectLocator().getMantisConnectPort(new URL(app.getProperty("web.soapURL")));
-    return !(mc.mc_issue_get("administrator", "root", BigInteger.valueOf(issueId)).getStatus().getName()=="resolved");
+    return !(mc.mc_issue_get("administrator", "root", BigInteger.valueOf(issueId)).getStatus().getName().equals("resolved"));
   }
 
-  public void skipIfNotFixed(int issueId) throws RemoteException, ServiceException, MalformedURLException {
-    if (isIssueOpen(issueId)) {
+  public void skipIfNotFixedInMantis(int issueId) throws RemoteException, ServiceException, MalformedURLException {
+    if (isIssueOpenInMantis(issueId)) {
       throw new SkipException("Ignored because of issue " + issueId);
     }
-  }*/
+  }
 
-  boolean isIssueOpen(int issueId) throws IOException {
+
+  boolean isIssueOpenInBugify(int issueId) throws IOException {
 
     String json = Executor.newInstance().auth("LSGjeU4yP1X493ud1hNniA==", "")
             .execute(Request.Get((String.format("http://demo.bugify.com/api/issues/%s.json", issueId)))).returnContent().asString();
@@ -60,16 +68,18 @@ public class TestBase {
 
     JsonObject info = issues.get(0).getAsJsonObject();
 
-    return info.get("state_name").getAsString() != "Closed";
+    return !(info.get("state_name").getAsString().equals("Closed")) ;
   }
 
-  public void skipIfNotFixed(int issueId) throws IOException {
-    if (isIssueOpen(issueId)) {
+  public void skipIfNotFixedInBugify(int issueId) throws IOException {
+    if (isIssueOpenInBugify(issueId)) {
       throw new SkipException("Ignored because of issue " + issueId);
     }
   }
-
 }
+
+
+
 
 
 
